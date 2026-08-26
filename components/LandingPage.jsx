@@ -119,11 +119,9 @@ const OBJECTIVE_OPTIONS = [
   { label: 'Filtrar y calificar clientes', icon: Filter },
   { label: 'Atender fuera de horario / de noche', icon: Moon },
 ];
-const CATALOG_OPTIONS = [
-  'Organizado y listo para conectar',
-  'Existe, pero está desordenado',
-  'No existe — necesito ayuda para armarlo',
-];
+const YES_NO_OPTIONS = ['Sí', 'No'];
+const AFTER_HOURS_OPTIONS = ['Yo mismo', 'Alguien de mi equipo', 'Nadie, se quedan sin responder'];
+const LOST_CUSTOMER_OPTIONS = ['Sí', 'Seguramente', 'No sé'];
 
 const TOTAL_STEPS = 5;
 
@@ -548,14 +546,31 @@ function DiagnosisModal({ open, onClose, initialPlanId }) {
     channel: '',
     volume: '',
     objective: '',
-    catalog: '',
+    hasWebsite: '',
+    hasAds: '',
+    adsVolume: '',
+    afterHoursResponder: '',
+    lostCustomer: '',
   });
 
   useEffect(() => {
     if (open) {
       setStep(1);
       setSubmitted(false);
-      setForm((f) => ({ ...f, company: '', contact: '', handle: '', channel: '', volume: '', objective: '', catalog: '' }));
+      setForm((f) => ({
+        ...f,
+        company: '',
+        contact: '',
+        handle: '',
+        channel: '',
+        volume: '',
+        objective: '',
+        hasWebsite: '',
+        hasAds: '',
+        adsVolume: '',
+        afterHoursResponder: '',
+        lostCustomer: '',
+      }));
     }
   }, [open]);
 
@@ -567,7 +582,12 @@ function DiagnosisModal({ open, onClose, initialPlanId }) {
     1: form.company.trim().length > 0 && form.contact.trim().length > 0,
     2: form.channel !== '' && form.volume !== '',
     3: form.objective !== '',
-    4: form.catalog !== '',
+    4:
+      form.hasWebsite !== '' &&
+      form.hasAds !== '' &&
+      (form.hasAds !== 'Sí' || form.adsVolume.trim().length > 0) &&
+      form.afterHoursResponder !== '' &&
+      form.lostCustomer !== '',
     5: true,
   }[step];
 
@@ -582,7 +602,11 @@ function DiagnosisModal({ open, onClose, initialPlanId }) {
       `Canal principal: ${form.channel}`,
       `Volumen diario: ${form.volume}`,
       `Objetivo principal: ${form.objective}`,
-      `Estado del catálogo: ${form.catalog}`,
+      `¿Página web o tienda en línea?: ${form.hasWebsite}`,
+      `¿Ya hace ads?: ${form.hasAds}`,
+      ...(form.hasAds === 'Sí' ? [`Mensajes con campañas activas: ${form.adsVolume}`] : []),
+      `Quién responde fuera de horario: ${form.afterHoursResponder}`,
+      `¿Se le ha ido algún cliente por no responder a tiempo?: ${form.lostCustomer}`,
       `Instagram/Web: ${form.handle || 'No indicado'}`,
     ];
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
@@ -713,16 +737,71 @@ function DiagnosisModal({ open, onClose, initialPlanId }) {
                   <h3 className="modal-step-title">Madurez tecnológica</h3>
                   <p className="modal-step-desc">Así sabemos con qué material vamos a entrenar la IA.</p>
 
-                  <div className="choice-grid choice-grid-1">
-                    {CATALOG_OPTIONS.map((opt) => (
+                  <p className="modal-group-label">¿Tu negocio cuenta con página web o tienda en línea?</p>
+                  <div className="choice-grid choice-grid-2">
+                    {YES_NO_OPTIONS.map((opt) => (
                       <ChoiceCard
                         key={opt}
                         label={opt}
-                        selected={form.catalog === opt}
-                        onClick={() => set('catalog')(opt)}
+                        selected={form.hasWebsite === opt}
+                        onClick={() => set('hasWebsite')(opt)}
                       />
                     ))}
                   </div>
+
+                  <p className="modal-group-label modal-group-label-spaced">¿Tu negocio ya hace ads?</p>
+                  <div className="choice-grid choice-grid-2">
+                    {YES_NO_OPTIONS.map((opt) => (
+                      <ChoiceCard
+                        key={opt}
+                        label={opt}
+                        selected={form.hasAds === opt}
+                        onClick={() => set('hasAds')(opt)}
+                      />
+                    ))}
+                  </div>
+
+                  {form.hasAds === 'Sí' && (
+                    <label className="text-field" style={{ marginTop: 12 }}>
+                      <span className="text-field-icon"><MessageCircle size={16} strokeWidth={2} /></span>
+                      <input
+                        type="text"
+                        placeholder="¿Cuántos mensajes recibes cuando tienes campañas activas?"
+                        value={form.adsVolume}
+                        onChange={(e) => set('adsVolume')(e.target.value)}
+                      />
+                    </label>
+                  )}
+
+                  <p className="modal-group-label modal-group-label-spaced">
+                    Cuando el negocio no está disponible pero te escriben, ¿quién responde los mensajes?
+                  </p>
+                  <div className="choice-grid choice-grid-1">
+                    {AFTER_HOURS_OPTIONS.map((opt) => (
+                      <ChoiceCard
+                        key={opt}
+                        label={opt}
+                        selected={form.afterHoursResponder === opt}
+                        onClick={() => set('afterHoursResponder')(opt)}
+                      />
+                    ))}
+                  </div>
+
+                  <p className="modal-group-label modal-group-label-spaced">¿Se te ha ido algún cliente por no responder a tiempo?</p>
+                  <div className="choice-grid choice-grid-3">
+                    {LOST_CUSTOMER_OPTIONS.map((opt) => (
+                      <ChoiceCard
+                        key={opt}
+                        label={opt}
+                        selected={form.lostCustomer === opt}
+                        onClick={() => set('lostCustomer')(opt)}
+                      />
+                    ))}
+                  </div>
+
+                  <p className="modal-insight-message">
+                    Nosotros la entrenamos, ella no olvida, no se cansa y cierra ventas como tú mejor vendedor, las 24 horas 👍🏻
+                  </p>
                 </div>
 
                 {/* Paso 5 */}
@@ -737,7 +816,13 @@ function DiagnosisModal({ open, onClose, initialPlanId }) {
                     <div className="summary-row"><span>Canal</span><strong>{form.channel || '—'}</strong></div>
                     <div className="summary-row"><span>Volumen</span><strong>{form.volume || '—'}</strong></div>
                     <div className="summary-row"><span>Objetivo</span><strong>{form.objective || '—'}</strong></div>
-                    <div className="summary-row"><span>Catálogo</span><strong>{form.catalog || '—'}</strong></div>
+                    <div className="summary-row"><span>Web / tienda en línea</span><strong>{form.hasWebsite || '—'}</strong></div>
+                    <div className="summary-row"><span>Hace ads</span><strong>{form.hasAds || '—'}</strong></div>
+                    {form.hasAds === 'Sí' && (
+                      <div className="summary-row"><span>Mensajes en campañas</span><strong>{form.adsVolume || '—'}</strong></div>
+                    )}
+                    <div className="summary-row"><span>Responde fuera de horario</span><strong>{form.afterHoursResponder || '—'}</strong></div>
+                    <div className="summary-row"><span>¿Se le ha ido un cliente?</span><strong>{form.lostCustomer || '—'}</strong></div>
                   </div>
                 </div>
               </div>
@@ -1227,6 +1312,11 @@ export default function LandingPage() {
         .choice-card-check {
           width: 20px; height: 20px; border-radius: 50%; background: var(--coral); color: #fff;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .modal-insight-message {
+          margin-top: 22px; font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--ink);
+          background: var(--coral-tint); border-radius: 14px; padding: 14px 16px;
         }
 
         .summary-box { background: var(--bg-soft); border-radius: 16px; padding: 6px 16px; }
