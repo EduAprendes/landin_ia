@@ -1245,7 +1245,8 @@ export default function LandingPage() {
           .modal-backdrop { align-items: center; padding: 24px; }
         }
         .modal-shell {
-          background: #fff; width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto;
+          background: #fff; width: 100%; max-width: 560px; max-height: 92vh; overflow: hidden;
+          display: flex; flex-direction: column;
           border-radius: 24px 24px 0 0; padding: 28px 24px 24px; position: relative;
         }
         @media (min-width: 640px) {
@@ -1267,7 +1268,10 @@ export default function LandingPage() {
           padding: 8px 12px; border-radius: 10px;
         }
 
-        .modal-slider-viewport { overflow: hidden; margin-top: 22px; }
+        .modal-slider-viewport {
+          overflow-x: hidden; overflow-y: auto; margin-top: 22px;
+          flex: 1 1 auto; min-height: 0;
+        }
         .modal-slider-track { display: flex; width: 500%; transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-step { width: 20%; flex-shrink: 0; padding-right: 6px; }
 
@@ -1281,9 +1285,12 @@ export default function LandingPage() {
         .text-field:focus-within { border-color: var(--coral); }
         .text-field-icon { color: var(--ink-faint); flex-shrink: 0; }
         .text-field input {
-          border: none; outline: none; width: 100%; font-size: 14.5px; font-family: inherit; color: var(--ink);
+          border: none; outline: none; width: 100%; font-size: 16px; font-family: inherit; color: var(--ink);
         }
         .text-field input::placeholder { color: var(--ink-faint); }
+        @media (min-width: 640px) {
+          .text-field input { font-size: 14.5px; }
+        }
 
         .modal-group-label { font-size: 12.5px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
         .modal-group-label-spaced { margin-top: 22px; }
@@ -1328,7 +1335,8 @@ export default function LandingPage() {
         .summary-row span { color: var(--ink-muted); }
         .summary-row strong { color: var(--ink); text-align: right; font-weight: 600; }
 
-        .modal-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 26px; }
+        .modal-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 26px; flex-shrink: 0; }
+        .modal-head, .progress-track, .modal-plan-badge { flex-shrink: 0; }
 
         .modal-success { text-align: center; padding: 20px 4px 4px; }
         .modal-success-icon {
