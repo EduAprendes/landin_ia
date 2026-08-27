@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
-  Play, MessageCircle, Zap, Cloud, Code2, Check, CheckCircle2,
+  MessageCircle, Zap, Cloud, Code2, Check, CheckCircle2,
   ChevronRight, ChevronLeft, X, Clock, TrendingDown, Sparkles, Calendar,
   Filter, Moon, HelpCircle, Building2, User, Globe, ArrowRight, Bot,
   Puzzle,
@@ -33,26 +33,10 @@ function Instagram({ size = 24, strokeWidth = 2, ...props }) {
 /*  Datos de contenido                                                 */
 /* ------------------------------------------------------------------ */
 
-const WHATSAPP_NUMBER = '584121234567'; // TODO: reemplazar por el número real del negocio
+const WHATSAPP_NUMBER = '584126773234';
 const ADVISOR_MESSAGE = 'Hola, quiero hablar con un asesor sobre la IA para WhatsApp e Instagram.';
 
 const PLANS = [
-  {
-    id: 'pyme',
-    name: 'Plan Pyme',
-    tagline: 'Para empezar a automatizar sin fricción',
-    price: 49,
-    setupFee: 150,
-    setupNote: 'Configuración de Meta Developer API + entrenamiento inicial en 48h.',
-    volume: 'Hasta 50 mensajes / día',
-    features: [
-      'Un canal: WhatsApp o Instagram',
-      'Respuestas a preguntas frecuentes',
-      'Captura y calificación de leads',
-      'Reporte semanal por correo',
-    ],
-    highlight: false,
-  },
   {
     id: 'escala',
     name: 'Plan Escala',
@@ -63,6 +47,8 @@ const PLANS = [
     volume: 'Hasta 150 mensajes / día',
     features: [
       'WhatsApp e Instagram al mismo tiempo',
+      'Respuestas a preguntas frecuentes',
+      'Captura y calificación de leads',
       'Agendamiento automático de citas',
       'Catálogo de productos integrado',
       'Panel en vivo + reporte semanal',
@@ -1024,22 +1010,6 @@ export default function LandingPage() {
         }
         .stats-caption { margin-top: 10px; font-size: 11.5px; color: var(--ink-faint); text-align: center; }
 
-        .vsl-card {
-          margin-top: 32px; position: relative; border-radius: 22px; overflow: hidden;
-          aspect-ratio: 16 / 9; background: linear-gradient(135deg, #1a1a1a 0%, #2b2b2b 55%, #1a1a1a 100%);
-          display: flex; align-items: center; justify-content: center; cursor: pointer;
-          box-shadow: 0 24px 48px -20px rgba(17,24,39,0.35);
-        }
-        .vsl-play {
-          width: 68px; height: 68px; border-radius: 50%; background: var(--coral);
-          display: flex; align-items: center; justify-content: center; color: #fff;
-          box-shadow: 0 0 0 14px rgba(255,255,255,0.08);
-        }
-        .vsl-caption {
-          position: absolute; bottom: 16px; left: 20px; color: rgba(255,255,255,0.75);
-          font-size: 12.5px; font-weight: 500; letter-spacing: 0.03em;
-        }
-
         .hero-cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 28px; }
         .hero-cta-hint { font-size: 13px; color: var(--ink-faint); }
 
@@ -1396,11 +1366,6 @@ export default function LandingPage() {
             </p>
 
             <ProblemSolutionStats />
-
-            <div className="vsl-card" role="button" tabIndex={0} aria-label="Reproducir video explicativo">
-              <span className="vsl-play"><Play size={26} strokeWidth={0} fill="#fff" /></span>
-              <span className="vsl-caption">Video explicativo · 3 min</span>
-            </div>
 
             <div className="hero-cta-row">
               <PrimaryButton onClick={handleUnlock}>Ver planes y solución</PrimaryButton>
