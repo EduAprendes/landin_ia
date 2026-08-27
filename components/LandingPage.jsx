@@ -246,7 +246,7 @@ function ProblemSolutionStats() {
         </div>
 
         <div className="stats-col stats-col-solution">
-          <p className="stats-col-label stats-col-label-coral">Con Respondia</p>
+          <p className="stats-col-label stats-col-label-coral">Con Hellokreo</p>
           {SOLUTION_STATS.map((s) => (
             <div className="stats-row" key={s.desc}>
               <span className="stats-number stats-number-coral">{s.number}</span>
@@ -1345,7 +1345,7 @@ export default function LandingPage() {
       <div className="nav">
         <div className="nav-logo">
           <span className="nav-logo-mark" />
-          Respondia
+          Hellokreo
         </div>
         <button type="button" className="btn-outline" onClick={openAdvisor} style={{ display: 'none' }}>
           Hablar con un asesor
@@ -1436,7 +1436,7 @@ export default function LandingPage() {
       </div>
 
       <div className="footer">
-        <p>Respondia · IA para WhatsApp e Instagram, directo a código.</p>
+        <p>Hellokreo · IA para WhatsApp e Instagram, directo a código.</p>
       </div>
 
       {/* STICKY WHATSAPP */}
