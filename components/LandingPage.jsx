@@ -46,7 +46,7 @@ const PLANS = [
     setupNote: 'Configuración de Meta Developer API + entrenamiento con tu base de datos en 72h.',
     volume: 'Hasta 150 mensajes / día',
     features: [
-      'WhatsApp e Instagram al mismo tiempo',
+      'Un canal a elección: WhatsApp o Instagram',
       'Respuestas a preguntas frecuentes',
       'Captura y calificación de leads',
       'Agendamiento automático de citas',
